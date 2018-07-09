@@ -1,0 +1,179 @@
+create table fandom(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+fandom TEXT);
+
+create table author(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+name TEXT);
+
+create table tag(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+tag TEXT, parent_id INTEGER, 
+FOREIGN KEY(parent_id) REFERENCES tag(id)
+);
+
+create table warning(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+warning TEXT
+);
+
+create table rating(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+rating TEXT
+);
+
+create table category(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+category TEXT
+);
+
+create table relationship(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+relationship TEXT, parent_id INTEGER, 
+FOREIGN KEY(parent_id) REFERENCES relationship(id)
+);
+
+create table character(
+id INTEGER PRIMARY KEY AUTOINCREMENT, 
+character TEXT, parent_id INTEGER, 
+FOREIGN KEY(parent_id) REFERENCES character(id)
+);
+
+create table series(
+id INTEGER PRIMARY KEY,
+name TEXT
+);
+
+create table text_types(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+type TEXT
+);
+
+create table text(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+type_id INTEGER, 
+FOREIGN KEY(type_id) REFERENCES text_types(id)
+);
+
+create table work(
+id INTEGER PRIMARY KEY,
+publish_date INTEGER, 
+update_date INTEGER, 
+edit_timestamp INTEGER, 
+words INTEGER, 
+chapters INTEGER,
+total_chapters INTEGER,
+comments INTEGER, 
+kudos INTEGER, 
+bookmarks INTEGER, 
+hits INTEGER, 
+title_id INTEGER, 
+note1_id INTEGER, 
+note2_id INTEGER, 
+summary_id INTEGER,
+FOREIGN KEY(title_id) REFERENCES text(id), 
+FOREIGN KEY(note1_id) REFERENCES text(id), 
+FOREIGN KEY(note2_id) REFERENCES text(id), 
+FOREIGN KEY(summary_id) REFERENCES text(id)
+);
+
+create table work_fandom(
+work_id INTEGER,
+fandom_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (fandom_id) REFERENCES fandom(id),
+PRIMARY KEY (work_id, fandom_id)
+);
+
+create table work_author(
+work_id INTEGER,
+author_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (author_id) REFERENCES author(id),
+PRIMARY KEY (work_id, author_id)
+);
+
+create table work_tag(
+work_id INTEGER,
+tag_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (tag_id) REFERENCES tag(id),
+PRIMARY KEY (work_id, tag_id)
+);
+
+create table work_warning(
+work_id INTEGER,
+warning_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (warning_id) REFERENCES warning(id),
+PRIMARY KEY (work_id, warning_id)
+);
+
+create table work_rating(
+work_id INTEGER,
+rating_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (rating_id) REFERENCES rating(id),
+PRIMARY KEY (work_id, rating_id)
+);
+
+create table work_category(
+work_id INTEGER,
+category_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (category_id) REFERENCES category(id),
+PRIMARY KEY (work_id, category_id)
+);
+
+create table work_relationship(
+work_id INTEGER,
+relationship_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (relationship_id) REFERENCES relationship(id),
+PRIMARY KEY (work_id, relationship_id)
+);
+
+create table work_character(
+work_id INTEGER,
+character_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (character_id) REFERENCES character(id),
+PRIMARY KEY (work_id, character_id)
+);
+
+create table work_series(
+work_id INTEGER,
+series_id INTEGER,
+FOREIGN KEY (work_id) REFERENCES work(id),
+FOREIGN KEY (series_id) REFERENCES series(id),
+PRIMARY KEY (work_id, series_id)
+);
+
+create table chapter(
+id INTEGER PRIMARY KEY,
+number INTEGER,
+work_id INTEGER,
+note1_id INTEGER,
+note2_id INTEGER,
+summary_id INTEGER,
+comments INTEGER,
+title_id INTEGER,
+text_id INTEGER,
+FOREIGN KEY(work_id) REFERENCES work(id),
+FOREIGN KEY(title_id) REFERENCES text(id), 
+FOREIGN KEY(note1_id) REFERENCES text(id), 
+FOREIGN KEY(note2_id) REFERENCES text(id), 
+FOREIGN KEY(summary_id) REFERENCES text(id),
+FOREIGN KEY(text_id) REFERENCES text(id)
+);
+
+create table paragraph(
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+parent_text INTEGER,
+text TEXT,
+prev_pg INTEGER,
+next_pg INTEGER,
+FOREIGN KEY(parent_text) REFERENCES text(id),
+FOREIGN KEY(prev_pg) REFERENCES paragraph(id),
+FOREIGN KEY(next_pg) REFERENCES paragraph(id)
+);
